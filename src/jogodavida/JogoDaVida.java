@@ -1,13 +1,18 @@
 package jogodavida;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 public class JogoDaVida {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		int matrizEntrada[][] = new int[5][5];
 		int matrizSaida[][] = new int[5][5];
 		int soma = 0;
 		int loop = 1;
+		boolean continua;
+		Scanner ler = new Scanner(System.in);
 		matrizEntrada[1][1] = 1;
 		matrizEntrada[1][3] = 1;
 		matrizEntrada[2][2] = 1;
@@ -16,7 +21,7 @@ public class JogoDaVida {
 		System.out.println("MATRIZ DE ENTRADA");
 		imprimeMatriz(matrizEntrada);
 
-		while (loop < 5) {
+		do {
 
 			System.out.println("JOGADA " + loop);
 
@@ -55,7 +60,16 @@ public class JogoDaVida {
 			imprimeMatriz(matrizSaida);
 			trocaMatriz(matrizEntrada, matrizSaida);
 			loop++;
-		}
+			char c = (char) System.in.read();
+			
+			if(c == ' ') {
+				continua = false;
+				
+			}else {
+				continua = true;
+				
+			}
+		} while (continua);
 	}
 
 	private static void trocaMatriz(int[][] matrizEntrada, int[][] matrizSaida) {
@@ -64,7 +78,7 @@ public class JogoDaVida {
 				matrizEntrada[i][j] = matrizSaida[i][j];// jogando a saida na matriz de entrada
 			}
 		}
-		matrizSaida = new int [matrizSaida.length][matrizSaida.length];
+		matrizSaida = new int[matrizSaida.length][matrizSaida.length];
 	}
 
 	private static void imprimeMatriz(int[][] matriz) {
