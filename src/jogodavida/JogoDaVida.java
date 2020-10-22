@@ -1,24 +1,64 @@
 package jogodavida;
 
-import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class JogoDaVida {
 
-	public static void main(String[] args) throws IOException {
-
-		int matrizEntrada[][] = new int[5][5];
-		int matrizSaida[][] = new int[5][5];
+	public static void main(String[] args) {
+		int linhaMax = 100;
+		int colunaMax = 100;
+		int matrizEntrada[][] = new int[linhaMax][colunaMax];
+		int matrizSaida[][] = new int[linhaMax][colunaMax];
 		int soma = 0;
 		int loop = 1;
 		boolean continua;
-		Scanner ler = new Scanner(System.in);
-		matrizEntrada[1][1] = 1;
-		matrizEntrada[1][3] = 1;
-		matrizEntrada[2][2] = 1;
-		matrizEntrada[2][3] = 1;
-		matrizEntrada[3][2] = 1;
+
+		for (int linha = 0; linha < matrizSaida.length; linha++) {
+
+			for (int coluna = 0; coluna < matrizSaida.length; coluna++) {
+				int inserirValor = JOptionPane.showConfirmDialog(null, "Deseja inserir valores?");
+
+				if (inserirValor == 0) {
+
+					String posicaoLinha = JOptionPane.showInputDialog("entre com a posição da linha, posição ate " + linhaMax);
+					int l = Integer.valueOf(posicaoLinha)-1;
+					
+					if (l < 0 || l >= linhaMax) {
+						do {
+							System.out.println("limite de linha estourado\n digite um numero menor");
+							posicaoLinha = JOptionPane.showInputDialog("entre com a posição da linha, posição ate " + linhaMax);
+							l = Integer.valueOf(posicaoLinha)-1;
+						} while (l < 0 || l >= linhaMax );
+						
+					}
+					
+					String posicaoColuna = JOptionPane.showInputDialog("entre com a posição da coluna, posição ate " + colunaMax);
+					int c = Integer.valueOf(posicaoColuna)-1;
+					if ( c < 0 || c >= colunaMax) {
+						do {
+							System.out.println("limite de linha estourado\n digite um numero menor");
+							posicaoColuna = JOptionPane.showInputDialog("entre com a posição da coluna, posição ate " + colunaMax);
+							c = Integer.valueOf(posicaoColuna)-1;
+						} while (c < 0 || c >= colunaMax );
+						
+					}
+
+					matrizEntrada[l][c] = 1;
+					// imprimeMatriz(matrizEntrada);
+				} else if (inserirValor == 1) {
+					System.out.println("valores adicionados");
+					linha = matrizSaida.length; // se o valor for 1 entao ele sai do for
+					coluna = matrizSaida.length;
+					// break;
+
+				}
+
+			}
+		}
+
 		System.out.println("MATRIZ DE ENTRADA");
+
 		imprimeMatriz(matrizEntrada);
 
 		do {
@@ -26,11 +66,8 @@ public class JogoDaVida {
 			System.out.println("JOGADA " + loop);
 
 			for (int l = 0; l < matrizEntrada.length; l++) {
-				// System.out.println("primeiro" + "valor de l é " + l + "");
 				for (int c = 0; c < matrizEntrada.length; c++) {
-					// System.out.println("segundo" + "valor de l é " + l + "valor de c é "+ c);
 					if (matrizEntrada[l][c] == 1) {// celula viva
-						// System.out.println("terceiro");
 						soma = verificaBordaSoma(matrizEntrada, l, c);
 						// System.out.println(soma);
 						if (soma == 2 || soma == 3) {
@@ -46,11 +83,8 @@ public class JogoDaVida {
 						// System.out.println("NOVA JOGADA");
 					}
 					if (matrizEntrada[l][c] == 0) { // celula morta
-						// System.out.println("quarto" + "valor de l = " + l + "valor de c é = " + c);
 						soma = verificaBordaSoma(matrizEntrada, l, c);
-						// System.out.println("quinto");
 						if (soma == 3) {
-							// System.out.println("sexto");
 							matrizSaida[l][c] = 1;
 						}
 
@@ -60,14 +94,19 @@ public class JogoDaVida {
 			imprimeMatriz(matrizSaida);
 			trocaMatriz(matrizEntrada, matrizSaida);
 			loop++;
-			char c = (char) System.in.read();
-			
-			if(c == ' ') {
-				continua = false;
-				
-			}else {
+			int cancelar = JOptionPane.showConfirmDialog(null, "Deseja fazer a proxima jogada?");
+
+			if (cancelar == 0) {
+
+				// char c = (char) System.in.read();
+
 				continua = true;
-				
+				// continua = false;
+
+			} else {
+				continua = false;
+				// continua = true;
+
 			}
 		} while (continua);
 	}
@@ -83,8 +122,6 @@ public class JogoDaVida {
 
 	private static void imprimeMatriz(int[][] matriz) {
 		// TODO: trocar os nomes mat n e m
-		// torquei mat por matriz
-		// e troquei m por l e n por c
 		for (int l = 0; l < matriz.length; l++) {
 			for (int c = 0; c < matriz.length; c++) {
 				System.out.print(matriz[l][c] + " ");
